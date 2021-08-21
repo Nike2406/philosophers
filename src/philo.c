@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 20:42:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/21 21:13:05 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/21 21:39:38 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@ int	main(int argc, char **argv)
 	if (argc == 6)
 		philo.ph_m_to_eat = p_atoi(argv[5]);
 
-	if ((t_philo *)malloc(sizeof(t_philo) * philo.num_of_ph) == 0)
-		return (-1);
-	int i = philo.num_of_ph;
+	// if ((t_philo *)malloc(sizeof(t_philo) * philo.num_of_ph) == 0)
+	// 	return (-1);
 
 	// pthread_t	p1, p2;
 	// pthread_create(&p1, NULL, &some_func, NULL);
