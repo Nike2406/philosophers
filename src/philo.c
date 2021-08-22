@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 20:42:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/21 21:39:38 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/22 13:51:03 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,32 @@
 
 void	*some_func()
 {
-	printf("Here is a function\n");
+	printf("Philo works\n");
 	return (NULL);
+}
+
+int	philo_phill(t_data *philo)
+{
+	unsigned int	i;
+	pthread_t		philo_threads[philo->num_of_ph];
+
+	i = 0;
+	pthread_mutex_init(&(philo->mutex), NULL);
+	while (i < philo->num_of_ph)
+	{
+		if (pthread_create(philo_threads + i, NULL, &some_func, NULL))
+			return (-1);
+		i++;
+	}
+	i = 0;
+	while (i < philo->num_of_ph)
+	{
+		if (pthread_join(philo_threads[i], NULL))
+			return (-1);
+		i++;
+	}
+	pthread_mutex_destroy(&(philo->mutex));
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -32,6 +56,7 @@ int	main(int argc, char **argv)
 	philo.t_to_sleep = p_atoi(argv[4]);
 	if (argc == 6)
 		philo.ph_m_to_eat = p_atoi(argv[5]);
+	philo_phill(&philo);
 
 	// if ((t_philo *)malloc(sizeof(t_philo) * philo.num_of_ph) == 0)
 	// 	return (-1);

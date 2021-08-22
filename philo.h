@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/31 14:52:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/18 23:32:13 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/22 13:41:37 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_data
 	unsigned int	t_to_eat;
 	unsigned int	t_to_sleep;
 	unsigned int	ph_m_to_eat;
+	pthread_mutex_t	mutex;
 }	t_data;
 
 typedef struct s_philo
