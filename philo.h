@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/31 14:52:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/22 13:41:37 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/22 16:24:13 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ typedef struct s_philo
 {
 	pthread_t		ph;
 	unsigned int	id;
-	unsigned int	fork;
-
+	pthread_mutex_t *left_fork;
+	pthread_mutex_t *right_fork;
+	t_data			*data;
 }	t_philo;
 
 
@@ -44,5 +45,8 @@ void	p_putstr(char *str);
 int		p_limits(long long total, char const s, int sign);
 int		p_atoi(const char *str);
 int		check_nums(char **args);
+
+int		philo_phill(t_data *philo);
+void	*philo_action(void *data);
 
 #endif

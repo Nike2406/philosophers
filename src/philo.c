@@ -6,57 +6,66 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 20:42:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/22 13:51:03 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/22 16:26:57 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../philo.h"
 
-void	*some_func()
-{
-	printf("Philo works\n");
-	return (NULL);
-}
+// int	create_threads()
 
-int	philo_phill(t_data *philo)
+int	philo_phill(t_data *data)
 {
-	unsigned int	i;
-	pthread_t		philo_threads[philo->num_of_ph];
+	pthread_t		philo_threads[data->num_of_ph];
 
-	i = 0;
-	pthread_mutex_init(&(philo->mutex), NULL);
-	while (i < philo->num_of_ph)
+	unsigned int j = 0;
+	t_philo **phils;
+	phils = malloc(sizeof(t_philo *) * data->num_of_ph);
+	while (j < data->num_of_ph)
 	{
-		if (pthread_create(philo_threads + i, NULL, &some_func, NULL))
-			return (-1);
-		i++;
+		phils[j] = (malloc(sizeof(t_philo) * data->num_of_ph));
+		phils[j]->id = j + 1;
+		j++;
 	}
-	i = 0;
-	while (i < philo->num_of_ph)
+
+	j = 0;
+	pthread_mutex_init(&(data->mutex), NULL);
+	while (j < data->num_of_ph)
 	{
-		if (pthread_join(philo_threads[i], NULL))
+		if (pthread_create(philo_threads + j, NULL,
+			philo_action, phils[j]))
 			return (-1);
-		i++;
+		j++;
+		usleep(100);
 	}
-	pthread_mutex_destroy(&(philo->mutex));
+	j = 0;
+	while (j < data->num_of_ph)
+	{
+		if (pthread_join(philo_threads[j], NULL))
+			return (-1);
+		j++;
+	}
+	pthread_mutex_destroy(&(data->mutex));
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_data	philo;
+	t_data	data;
 
 	if (argc != 5 && argc != 6)
 		return(p_err(1));
 	if (check_nums(argv) < 0)
 		return (-1);
-	philo.num_of_ph = p_atoi(argv[1]);
-	philo.t_to_die = p_atoi(argv[2]);
-	philo.t_to_eat = p_atoi(argv[3]);
-	philo.t_to_sleep = p_atoi(argv[4]);
+	data.num_of_ph = p_atoi(argv[1]);
+	data.t_to_die = p_atoi(argv[2]);
+	data.t_to_eat = p_atoi(argv[3]);
+	data.t_to_sleep = p_atoi(argv[4]);
 	if (argc == 6)
-		philo.ph_m_to_eat = p_atoi(argv[5]);
-	philo_phill(&philo);
+		data.ph_m_to_eat = p_atoi(argv[5]);
+	else
+		data.ph_m_to_eat = 0;
+	philo_phill(&data);
 
 	// if ((t_philo *)malloc(sizeof(t_philo) * philo.num_of_ph) == 0)
 	// 	return (-1);
