@@ -8,9 +8,12 @@
 			"name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/fdf",
+            "program": "${workspaceFolder}/philo",
             "args": [
-				"42.fdf"
+				"2",
+				"30",
+				"10",
+				"10"
 			],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

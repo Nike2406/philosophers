@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 20:53:53 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/18 22:31:54 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/22 21:46:48 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,10 @@
 int	p_err(int err)
 {
 	if (err == 1)
-		p_putstr("Incorrect number of arguments!\n");
+		printf("Incorrect number of arguments!\n");
 	if (err == 2)
-		p_putstr("Only positive numbers are allowed!\n");
+		printf("Only positive numbers are allowed!\n");
 	return(-1);
-}
-
-void	p_putstr(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		write(1, &str[i], 1);
-		i++;
-	}
 }
 
 int	p_limits(long long total, char const s, int sign)
@@ -93,3 +81,10 @@ int		check_nums(char **args)
 	return (0);
 }
 
+int	get_time()
+{
+	struct timeval timeval;
+
+	gettimeofday(&timeval, NULL);
+	return (timeval.tv_sec * 1000 + timeval.tv_usec / 1000);
+}

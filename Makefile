@@ -20,7 +20,7 @@ INCLUDE		= philo.h
 .o: .c $(INCLUDE)
 	$(CC) $(CFLAGS) $< -o $@
 
-all: sound $(NAME)
+all: $(NAME)
 
 sound:
 	@say -v Yuri "Поехали, ща скопилю тебе брат"
@@ -28,8 +28,10 @@ sound:
 ${NAME}: $(OBJS) $(INCLUDE)
 
 	$(CC) $(OBJS) -o $(NAME)
-	@say -v Yuri "Готово, братуха ежжи"
-	@echo 🤮🤮🤮🤮🤮🤮🤮🤮🤮🤮🤮
+#	@say -v Yuri "Готово, братуха ежжи"
+	@echo ""
+	@echo 🥴🤢🤮😵
+	@echo ""
 
 bonus: libft $(NAME)
 
