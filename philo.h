@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/31 14:52:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 15:41:44 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/24 20:07:56 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	p_usleep(long long time);
 int		philo_phill(t_data *philo);
 void	*philo_action(void *data);
 void	philo_messages(int i, unsigned int a, unsigned int b, t_forks *mutex);
+void	philo_destroy(t_philo **phils, t_data *data);
 
 int		waitress(t_philo **phils);
 void	*check_philo(void *phils);

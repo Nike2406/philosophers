@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/22 14:09:42 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 15:15:26 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/24 20:40:20 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,6 @@ void	thinking(t_philo *philo)
 {
 	philo_messages(THINKING, get_time() - philo->data->time, philo->id, philo->data->mutex);
 }
-
-// int	is_dead(t_philo *philo)
-// {
-// 	if ((get_time() - philo->hungry_time) > philo->data->t_to_die)
-// 	{
-// 		printf("%d [%d] \e[0;31mis dead\e[0;39m\n", get_time() \
-// 		- philo->data->time, philo->id);
-// 		return (-1);
-// 	}
-// 	return (0);
-// }
 
 void	sleeping(t_philo *philo)
 {
@@ -79,9 +68,9 @@ void	philo_messages(int i, unsigned int a, unsigned int b, t_forks *mutex)
 {
 	pthread_mutex_lock(mutex);
 	if (i == T_L_FORK)
-		printf("%d [%d] has taken a left fork is\n", a, b);
+		printf("%d [%d] has taken a fork\n", a, b);
 	else if (i == T_R_FORK)
-		printf("%d [%d] has taken a right fork\n", a, b);
+		printf("%d [%d] has taken a fork\n", a, b);
 	else if (i == EATING)
 		printf("%d [%d] \e[0;32mis eating\e[0;39m\n", a, b);
 	else if (i == SLEEPING)
@@ -90,7 +79,7 @@ void	philo_messages(int i, unsigned int a, unsigned int b, t_forks *mutex)
 		printf("%d [%d] \e[0;33mis thinking\e[0;39m\n", a, b);
 	else if (i == DEATH)
 	{
-		printf("%d [%d] \e[0;31mis dead\e[0;39m\n", a, b);
+		printf("%d [%d] \e[0;31mdied\e[0;39m\n", a, b);
 		return ;
 	}
 	pthread_mutex_unlock(mutex);

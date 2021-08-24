@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 20:41:29 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 15:52:50 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/24 21:05:32 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	*check_philo(void *phils)
 	{
 		if (i >= tmp[0]->data->num_of_ph)
 			i = 0;
-		if ((tmp[i]->eat_count >= tmp[0]->data->ph_m_to_eat) && tmp[0]->data->flag_eating_tms)
+		if ((tmp[i]->eat_count >= tmp[0]->data->ph_m_to_eat) \
+			&& tmp[0]->data->flag_eating_tms)
 			{
 				tmp[0]->data->is_full++;
 				if (tmp[0]->data->is_full < tmp[0]->data->num_of_ph)
@@ -45,11 +46,10 @@ void	*check_philo(void *phils)
 				else
 					return (NULL);
 			}
-		// printf("Time %d, philo %d\n", (get_time() - tmp[i]->hungry_time), tmp[i]->id);
 		if ((get_time() - tmp[i]->hungry_time) > tmp[i]->data->t_to_die)
 		{
-			// pthread_mutex_lock();
-			philo_messages(DEATH, get_time() - tmp[i]->data->time, tmp[i]->id, tmp[0]->data->mutex);
+			philo_messages(DEATH, get_time() - tmp[i]->data->time, tmp[i]->id, \
+				tmp[0]->data->mutex);
 			return ((void *)-1);
 		}
 		i++;
