@@ -12,8 +12,9 @@ endif
 SRCS 		= src/philo.c \
 			src/utils.c \
 			src/philo_actions.c \
-			src/waitress.c
-SRCS_BONUS	=
+			src/waitress.c \
+			src/errs.c
+#SRCS_BONUS	=
 INCLUDE		= philo.h
 
 .PHONY: all clean fclean re bonus norm
@@ -38,9 +39,8 @@ bonus: libft $(NAME)
 
 norm:
 	norminette $(SRCS)
-	norminette $(SRCS_BONUS)
+#	norminette $(SRCS_BONUS)
 	norminette $(INCLUDE)
-	make -C libft/ norm
 
 clean:
 	rm -f src/*.o

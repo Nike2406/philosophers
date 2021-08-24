@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/31 14:52:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 20:07:56 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/24 22:59:41 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,26 @@
 typedef pthread_mutex_t	t_forks;
 typedef struct s_data
 {
-	unsigned int	num_of_ph;
-	unsigned int	t_to_die;
-	unsigned int	t_to_eat;
-	unsigned int	t_to_sleep;
-	unsigned int	ph_m_to_eat;
-	unsigned int	time;
-	unsigned int	flag_eating_tms;
-	unsigned int	is_full;
-	t_forks			*mutex;
+	int		num_of_ph;
+	int		t_to_die;
+	int		t_to_eat;
+	int		t_to_sleep;
+	int		ph_m_to_eat;
+	int		time;
+	int		flag_eating_tms;
+	t_forks	*mutex;
 }	t_data;
 
 typedef struct s_philo
 {
-	unsigned int	id;
-	t_forks			*left_fork;
-	t_forks			*right_fork;
-	t_data			*data;
-	unsigned int	status;
-	unsigned int	hungry_time;
-	unsigned int	eat_count;
+	int		id;
+	t_forks	*left_fork;
+	t_forks	*right_fork;
+	t_data	*data;
+	int		status;
+	int		hungry_time;
+	int		eat_count;
+	int		is_full;
 }	t_philo;
 
 int		p_err(int err);
@@ -59,17 +59,18 @@ int		check_nums(char **args);
 int		get_time(void);
 void	p_usleep(long long time);
 
+int		data_fill(int argc, char **argv, t_data *data);
 int		philo_phill(t_data *philo);
 void	*philo_action(void *data);
-void	philo_messages(int i, unsigned int a, unsigned int b, t_forks *mutex);
+void	philo_messages(int i, int a, int b, t_forks *mutex);
 void	philo_destroy(t_philo **phils, t_data *data);
 
 int		waitress(t_philo **phils);
 void	*check_philo(void *phils);
+int		check_fullfillment(t_philo **tmp);
 
 void	take_forks(t_philo *philo);
 int		eating(t_philo *philo);
 void	sleeping(t_philo *philo);
-void	thinking(t_philo *philo);
 
 #endif

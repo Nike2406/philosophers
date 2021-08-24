@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 20:42:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 20:35:29 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/24 23:18:32 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 int	create_threads(t_philo **phils, t_data *data)
 {
-	unsigned int	j;
-	pthread_t		philo_threads[data->num_of_ph];
+	int			j;
+	pthread_t	*philo_threads;
 
 	j = 0;
-	data->time  = get_time();
+	data->time = get_time();
+	philo_threads = malloc(sizeof(pthread_t) * data->num_of_ph);
 	while (j < data->num_of_ph)
 	{
-		if (pthread_create(philo_threads + j, NULL,
-			philo_action, phils[j]))
+		if (pthread_create(philo_threads + j, NULL, \
+				philo_action, phils[j]))
 			return (-1);
 		j++;
 	}
@@ -34,13 +35,14 @@ int	create_threads(t_philo **phils, t_data *data)
 		j++;
 	}
 	waitress(phils);
+	free(philo_threads);
 	philo_destroy(phils, data);
 	return (0);
 }
 
 void	philo_destroy(t_philo **phils, t_data *data)
 {
-	unsigned int	j;
+	int	j;
 
 	pthread_mutex_destroy(data->mutex);
 	j = 0;
@@ -53,15 +55,13 @@ void	philo_destroy(t_philo **phils, t_data *data)
 
 int	philo_phill(t_data *data)
 {
-	t_philo 		**phils;
-	unsigned int	j;
-	t_forks			*forks;
+	t_philo	**phils;
+	int		j;
+	t_forks	*forks;
 
 	j = 0;
 	forks = (t_forks *)malloc(sizeof(t_forks) * data->num_of_ph);
-	// printf("Leak in fork is %p\n", forks);
 	phils = malloc(sizeof(t_philo *) * data->num_of_ph);
-	// printf("Leak in phils is %p\n", phils);
 	data->mutex = malloc(sizeof(t_forks));
 	while (j < data->num_of_ph)
 	{
@@ -72,6 +72,8 @@ int	philo_phill(t_data *data)
 		phils[j]->left_fork = &forks[j];
 		phils[j]->right_fork = &forks[(j + 1) % data->num_of_ph];
 		phils[j]->data = data;
+		if (data->flag_eating_tms)
+			phils[j]->is_full = 0;
 		j++;
 	}
 	if (create_threads(phils, data) < 0)
@@ -80,30 +82,39 @@ int	philo_phill(t_data *data)
 	return (0);
 }
 
+int	data_fill(int argc, char **argv, t_data *data)
+{
+	data->num_of_ph = p_atoi(argv[1]);
+	if (data->num_of_ph < 1)
+		return (-1);
+	data->t_to_die = p_atoi(argv[2]);
+	data->t_to_eat = p_atoi(argv[3]);
+	data->t_to_sleep = p_atoi(argv[4]);
+	if (argc == 6)
+	{
+		data->ph_m_to_eat = p_atoi(argv[5]);
+		if (data->ph_m_to_eat < 1)
+			return (-1);
+		data->flag_eating_tms = 1;
+	}
+	else
+		data->flag_eating_tms = 0;
+	if (data->num_of_ph < 0 || data->t_to_die < 0 || \
+		data->t_to_eat < 0 || data->t_to_sleep < 0)
+		return (-1);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_data	data;
 
 	if (argc != 5 && argc != 6)
-		return(p_err(1));
+		return (p_err(1));
 	if (check_nums(argv) < 0)
 		return (-1);
-	data.num_of_ph = p_atoi(argv[1]);
-	if (data.num_of_ph < 1)
-		return (-1);
-	data.t_to_die = p_atoi(argv[2]);
-	data.t_to_eat = p_atoi(argv[3]);
-	data.t_to_sleep = p_atoi(argv[4]);
-	if (argc == 6)
-	{
-		data.ph_m_to_eat = p_atoi(argv[5]);
-		if (data.ph_m_to_eat < 1)
-			return (-1);
-		data.flag_eating_tms = 1;
-		data.is_full = 0;
-	}
-	else
-		data.flag_eating_tms = 0;
+	if (data_fill(argc, argv, &data) < 0)
+		return (p_err(2));
 	if (philo_phill(&data) < 0)
 		return (-1);
 	return (0);

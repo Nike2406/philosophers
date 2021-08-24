@@ -6,20 +6,11 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 20:53:53 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 00:12:33 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/24 22:50:28 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
-int	p_err(int err)
-{
-	if (err == 1)
-		printf("Incorrect number of arguments!\n");
-	if (err == 2)
-		printf("Only positive numbers are allowed!\n");
-	return(-1);
-}
 
 int	p_limits(long long total, char const s, int sign)
 {
@@ -31,7 +22,7 @@ int	p_limits(long long total, char const s, int sign)
 		return (-1);
 	min = (total * 10 + (s - '0')) * sign;
 	if (min < -2147483648)
-		return (0);
+		return (-2);
 	return (1);
 }
 
@@ -58,10 +49,10 @@ int	p_atoi(const char *str)
 	return (0);
 }
 
-int		check_nums(char **args)
+int	check_nums(char **args)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 1;
 	while (args[i])
@@ -95,9 +86,9 @@ void	p_usleep(long long time)
 	}
 }
 
-int	get_time()
+int	get_time(void)
 {
-	struct timeval timeval;
+	struct timeval	timeval;
 
 	gettimeofday(&timeval, NULL);
 	return (timeval.tv_sec * 1000 + timeval.tv_usec / 1000);
