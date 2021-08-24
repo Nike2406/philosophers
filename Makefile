@@ -11,7 +11,8 @@ endif
 
 SRCS 		= src/philo.c \
 			src/utils.c \
-			src/philo_actions.c
+			src/philo_actions.c \
+			src/waitress.c
 SRCS_BONUS	=
 INCLUDE		= philo.h
 

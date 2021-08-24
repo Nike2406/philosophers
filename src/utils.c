@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 20:53:53 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/22 21:46:48 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/24 00:12:33 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,20 @@ int		check_nums(char **args)
 		i++;
 	}
 	return (0);
+}
+
+void	p_usleep(long long time)
+{
+	time_t	start;
+	time_t	stop;
+
+	stop = get_time() + time;
+	start = get_time();
+	while (start < stop)
+	{
+		usleep(50);
+		start = get_time();
+	}
 }
 
 int	get_time()
