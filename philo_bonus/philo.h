@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/31 14:52:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 22:59:41 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/24 23:43:36 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <pthread.h>
-# include <string.h> // memset
+# include <string.h>
 # include <sys/time.h>
 
 # define T_L_FORK	1
