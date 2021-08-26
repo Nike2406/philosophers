@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 20:42:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 23:18:32 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/26 15:54:16 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,16 @@ void	philo_destroy(t_philo **phils, t_data *data)
 	}
 }
 
+void	sem_inits(t_philo	*philo, t_data *data)
+{
+	sem_unlink("forks");
+	sem_unlink("message");
+	// sem_unlink("death");
+	// sem_unlink("eat_times");
+	philo->left_fork = sem_open("forks", O_CREAT, 0777, 1);
+	sem_open("message", O_CREAT, 0777, 1);
+}
+
 int	philo_phill(t_data *data)
 {
 	t_philo	**phils;
@@ -67,10 +77,10 @@ int	philo_phill(t_data *data)
 	{
 		phils[j] = (malloc(sizeof(t_philo) * data->num_of_ph));
 		phils[j]->id = j + 1;
-		pthread_mutex_init(&forks[j], NULL);
-		pthread_mutex_init(data->mutex, NULL);
-		phils[j]->left_fork = &forks[j];
-		phils[j]->right_fork = &forks[(j + 1) % data->num_of_ph];
+		sem_inits(phils[j], data);// pthread_mutex_init(&forks[j], NULL);
+		// pthread_mutex_init(data->mutex, NULL);
+		// phils[j]->left_fork = &forks[j];
+		// phils[j]->right_fork = &forks[(j + 1) % data->num_of_ph];
 		phils[j]->data = data;
 		if (data->flag_eating_tms)
 			phils[j]->is_full = 0;

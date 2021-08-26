@@ -1,4 +1,4 @@
-NAME 		= philo
+NAME 		= philo_bonus
 FLAGS		= -Wall -Wextra -Werror
 CFLAGS		= $(FLAGS) -I. -g
 CC			= gcc

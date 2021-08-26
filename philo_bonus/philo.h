@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/31 14:52:46 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 23:43:36 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/26 15:53:17 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <pthread.h>
 # include <string.h>
+# include <semaphore.h>
 # include <sys/time.h>
 
 # define T_L_FORK	1
@@ -27,7 +28,7 @@
 # define THINKING	5
 # define DEATH		6
 
-typedef pthread_mutex_t	t_forks;
+typedef sem_t	t_forks;
 typedef struct s_data
 {
 	int		num_of_ph;
@@ -72,5 +73,7 @@ int		check_fullfillment(t_philo **tmp);
 void	take_forks(t_philo *philo);
 int		eating(t_philo *philo);
 void	sleeping(t_philo *philo);
+
+void	sem_inits(t_philo	*philo, t_data *data);
 
 #endif

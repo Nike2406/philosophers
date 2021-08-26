@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/22 14:09:42 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 22:50:44 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/26 15:48:25 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	take_forks(t_philo *philo)
 
 void	philo_messages(int i, int a, int b, t_forks *mutex)
 {
-	pthread_mutex_lock(mutex);
+	sem_wait();
+	//pthread_mutex_lock(mutex);
 	if (i == T_L_FORK)
 		printf("%d [%d] has taken a fork\n", a, b);
 	else if (i == T_R_FORK)
@@ -84,5 +85,6 @@ void	philo_messages(int i, int a, int b, t_forks *mutex)
 		printf("%d [%d] \e[0;31mdied\e[0;39m\n", a, b);
 		return ;
 	}
-	pthread_mutex_unlock(mutex);
+	sem_post();
+	// pthread_mutex_unlock(mutex);
 }
