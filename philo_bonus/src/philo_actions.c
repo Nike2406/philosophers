@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/22 14:09:42 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/26 15:48:25 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/27 03:41:12 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,23 @@ void	*philo_action(void *philo)
 	tmp->hungry_time = get_time();
 	tmp->eat_count = 0;
 	if (!(tmp->id % 2))
-		usleep(100);
+		usleep(200);
+	waitress(tmp);
+
 	while (1)
 	{
 		take_forks(philo);
 		philo_messages(THINKING, get_time() - tmp->data->time, \
-			tmp->id, tmp->data->mutex);
+			tmp->id, tmp->data->sem);
+
+		// Try to meurder processes
+		// int i = 0;
+		// while (tmp->data->pid_arr[i])
+		// {
+		// 	printf("i - %d, pid - %d ", i, tmp->data->pid_arr[i]);
+		// 	printf("\n");
+		// 	i++;
+		// }
 	}
 	return (NULL);
 }
@@ -33,18 +44,20 @@ void	*philo_action(void *philo)
 void	sleeping(t_philo *philo)
 {
 	philo_messages(SLEEPING, get_time() - philo->data->time, \
-		philo->id, philo->data->mutex);
+		philo->id, philo->data->sem);
 	p_usleep(philo->data->t_to_sleep);
 }
 
 int	eating(t_philo *philo)
 {
+	// if (philo->data->is_dead)
+	// 	exit(1);
 	philo_messages(EATING, get_time() - philo->data->time, \
-		philo->id, philo->data->mutex);
+		philo->id, philo->data->sem);
 	philo->hungry_time = get_time();
 	p_usleep(philo->data->t_to_eat);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	sem_post(philo->fork);
+	sem_post(philo->fork);
 	if (philo->data->flag_eating_tms)
 	{
 		philo->eat_count++;
@@ -57,34 +70,50 @@ int	eating(t_philo *philo)
 
 void	take_forks(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
+	sem_wait(philo->fork);
+	// if (philo->data->is_dead)
+	// 	exit(1);
+	// printf("Is dead = %d\n", philo->data->is_dead);
 	philo_messages(T_L_FORK, get_time() - philo->data->time, \
-		philo->id, philo->data->mutex);
-	pthread_mutex_lock(philo->right_fork);
+		philo->id, philo->data->sem);
+	sem_wait(philo->fork);
+	// if (philo->data->is_dead)
+	// 	exit(1);
 	philo_messages(T_R_FORK, get_time() - philo->data->time, \
-		philo->id, philo->data->mutex);
+		philo->id, philo->data->sem);
 	eating(philo);
 }
 
-void	philo_messages(int i, int a, int b, t_forks *mutex)
+void	philo_messages(int i, long unsigned int a, int b, t_forks *sem)
 {
-	sem_wait();
+	sem_wait(sem);
 	//pthread_mutex_lock(mutex);
 	if (i == T_L_FORK)
-		printf("%d [%d] has taken a fork\n", a, b);
+		printf("%lu [%d] has taken a fork\n", a, b);
 	else if (i == T_R_FORK)
-		printf("%d [%d] has taken a fork\n", a, b);
+		printf("%lu [%d] has taken a fork\n", a, b);
 	else if (i == EATING)
-		printf("%d [%d] \e[0;32mis eating\e[0;39m\n", a, b);
+		printf("%lu [%d] \e[0;32mis eating\e[0;39m\n", a, b);
 	else if (i == SLEEPING)
-		printf("%d [%d] \e[0;35mis sleeping\e[0;39m\n", a, b);
+		printf("%lu [%d] \e[0;35mis sleeping\e[0;39m\n", a, b);
 	else if (i == THINKING)
-		printf("%d [%d] \e[0;33mis thinking\e[0;39m\n", a, b);
+		printf("%lu [%d] \e[0;33mis thinking\e[0;39m\n", a, b);
 	else if (i == DEATH)
 	{
-		printf("%d [%d] \e[0;31mdied\e[0;39m\n", a, b);
-		return ;
+		printf("%lu [%d] \e[0;31mdied\e[0;39m\n", a, b);
+		// int j = 0;
+		// while (j < philo)
+		// kill(0, SIGKILL);
+		exit(1);
 	}
-	sem_post();
+	sem_post(sem);
 	// pthread_mutex_unlock(mutex);
+}
+
+void philo_death(long unsigned int a, int b, t_forks *sem)
+{
+	sem_wait(sem);
+	printf("%lu [%d] \e[0;31mdied\e[0;39m\n", a, b);
+	sem_post(sem);
+	exit(1);
 }

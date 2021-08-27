@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 22:29:26 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 22:58:15 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/26 22:51:28 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int	p_err(int err)
 {
 	if (err == 1)
 		printf("Incorrect number of arguments!\n");
-	if (err == 2)
+	else if (err == 2)
 		printf("Only positive and not overwelming numbers are allowed!\n");
-	return (-1);
+	else if (err == 3)
+		printf("Fork error\n");
+	exit(1);
 }

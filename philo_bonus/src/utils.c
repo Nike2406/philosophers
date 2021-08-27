@@ -6,7 +6,7 @@
 /*   By: prochell <prochell@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 20:53:53 by prochell          #+#    #+#             */
-/*   Updated: 2021/08/24 22:50:28 by prochell         ###   ########.fr       */
+/*   Updated: 2021/08/27 01:00:36 by prochell         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	p_usleep(long long time)
 	}
 }
 
-int	get_time(void)
+long unsigned int	get_time(void)
 {
 	struct timeval	timeval;
 
